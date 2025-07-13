@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { BiSearchAlt2, BiCameraMovie } from "react-icons/bi"
+import {BiSearchAlt2, BiCameraMovie} from '../utils/icones'
 
 
 export default function Navbar() {

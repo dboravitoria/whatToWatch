@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import MovieCard from "../components/MovieCard"
-import { FaFastBackward, FaStepBackward, FaFastForward, FaStepForward } from "react-icons/fa";
+import {FaFastBackward, FaStepBackward, FaFastForward, FaStepForward} from '../utils/icones'
 import { ClipLoader } from "react-spinners"
 
 
@@ -74,10 +74,7 @@ export default function Home() {
               </div>
             )}
 
-
-        
       </div>
-
       
       <div className="flex justify-center gap-2 mt-8 flex-wrap">
         {/* Botão Primeira Página */}
@@ -86,8 +83,7 @@ export default function Home() {
             onClick={() => handlePageChange(1)}
             className="px-4 py-2 rounded items-center flex justify-center
             text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
-          >
+            bg-primaryBlack hover:bg-secondaryRed">
             <FaFastBackward/>
           </button>
         )}
@@ -98,8 +94,7 @@ export default function Home() {
             onClick={() => handlePageChange(page - 1)}
             className="px-4 py-2 rounded items-center flex justify-center
             text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
-          >
+            bg-primaryBlack hover:bg-secondaryRed">
             <FaStepBackward/>
           </button>
         )}
@@ -127,31 +122,26 @@ export default function Home() {
             )
           })
         })()}
-
-        
-        {page < totalPages && (
+          {page < totalPages && (
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              className="px-4 py-2 rounded items-center flex justify-center
+              text-white card
+              bg-primaryBlack hover:bg-secondaryRed"
+            >
+              <FaStepForward/>
+            </button>
+          )}
+          {page < totalPages && (
           <button
-            onClick={() => handlePageChange(page + 1)}
+            onClick={() => handlePageChange(totalPages)}
             className="px-4 py-2 rounded items-center flex justify-center
-            text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
+              text-white card
+              bg-primaryBlack hover:bg-secondaryRed"
           >
-            <FaStepForward/>
+            <FaFastForward/>
           </button>
         )}
-        {page < totalPages && (
-        <button
-          onClick={() => handlePageChange(totalPages)}
-          className="px-4 py-2 rounded items-center flex justify-center
-            text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
-        >
-          <FaFastForward/>
-        </button>
-      )}
-
-
-
         </div>
     </>
   )

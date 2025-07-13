@@ -11,6 +11,7 @@ export default {
         darkBack: '#242424',
         primaryBlack: '#121212',
         secundaryBlack: '#1a1a1a',
+        tertiaryBlack: '#a3a3a3',
         primaryRed: '#ef4444',
         secondaryRed: '#b91c1c',
         primaryYellow: '#facc15',

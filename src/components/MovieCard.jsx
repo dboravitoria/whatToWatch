@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom"
-import {FaStar} from 'react-icons/fa'
+import {FaStar} from '../utils/icones.js'
 import notFound from '../../public/notFound.webp'
+// eslint-disable-next-line no-unused-vars
+import { motion  } from "framer-motion";
 
-const urlImg = import.meta.env.VITE_IMG
+import { getYear } from "../utils/format";
+
+
 
 export default function MovieCard({movie, showLink=true}) {
-    const getYear = (year) =>{
-    const data = new Date(year)
-    const ano = data.getFullYear()
-    return `(${ano})`
-  }
+
+    const urlImg = import.meta.env.VITE_IMG
 
   return (
         <>
@@ -22,9 +23,19 @@ export default function MovieCard({movie, showLink=true}) {
                 }
                 
                 <div className="card-body">
-                    <h2 className="card-title h4 inline">{movie.title} {getYear(movie.release_date)}</h2>
+                    <h2 className="card-title h4 inline">{movie.title} {getYear(movie.release_date)}</h2>                    
                     <p className="card-text flex align-middle items-center mt-3 h5"><FaStar className="inline text-primaryYellow w-10 text-xl"/>{movie.vote_average == 0 ? "Não existe avaliação" : (movie.vote_average.toFixed(1))}</p>
-                    {showLink && <Link to={`/movie/${movie.id}`}><p className="btn border-2 p-2 font-bold bg-primaryRed fixed-bottom d-block w-50 mx-auto mb-4 hover:text-primaryRed hover:border-2 hover:border-primaryRed active:hidden">Detalhes</p></Link>}
+
+                    {showLink && (
+                        <Link to={`/movie/${movie.id}`}>
+                            <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            transition={{ type: 'spring', stiffness: 300 }}
+                            className="btn border-2 p-2 font-bold bg-primaryRed fixed-bottom d-block w-50 mx-auto mb-4 hover:text-primaryRed hover:border-primaryRed"
+                            >Detalhes</motion.button>
+                        </Link>)}
+
                 </div>
             </div>
         </>
