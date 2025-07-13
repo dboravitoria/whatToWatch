@@ -1,8 +1,21 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { BiSearchAlt2, BiCameraMovie } from "react-icons/bi"
 
 
 export default function Navbar() {
+
+  const [search, setSearch] = useState("")
+
+  const navigate = useNavigate()
+
+  const handleSubmit = (e)=>{
+    e.preventDefault()
+    if(!search)return
+    navigate(`/search?q=${search}`)
+    setSearch("")
+  }
+
   return (
         <>
             <nav className="
@@ -13,9 +26,10 @@ export default function Navbar() {
                 <BiCameraMovie className="inline mb-2 text-primaryYellow"/><span className="ml-4">What To Watch</span>
               </Link>
             </h2>
-            <form className="flex text-white gap-2 *:rounded">
-                    <input type="text" placeholder="O que você está buscando?" className="py-2 pr-20 pl-4"/>
-                    <button type="submit" className="bg-primaryRed p-2 text-lg border-2 border-primaryRed pointer hover:bg-transparent hover:transition-all hover:text-primaryRed"><BiSearchAlt2/></button>
+            <form className="flex text-primaryYellow gap-2 *:rounded" onSubmit={handleSubmit}>
+                    <input type="text" placeholder="O que você está buscando?" className="py-2 pr-20 pl-4" onChange={(e)=> setSearch(e.target.value)} value={search}/>
+                    
+                    <button type="submit" className="card bg-primaryRed p-2 text-lg border-2 border-primaryRed pointer hover:bg-transparent hover:transition-all hover:text-primaryRed"><BiSearchAlt2/></button>
             </form>
           </nav>
         </>

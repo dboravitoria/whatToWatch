@@ -10,8 +10,11 @@ export default {
       colors: {
         darkBack: '#242424',
         primaryBlack: '#121212',
+        secundaryBlack: '#1a1a1a',
         primaryRed: '#ef4444',
-        primaryYellow: '#eab308'
+        secondaryRed: '#b91c1c',
+        primaryYellow: '#facc15',
+        secondaryYellow: '#ca8a04'
       }
     },
   },
