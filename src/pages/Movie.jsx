@@ -152,9 +152,7 @@ export default function Movie() {
             >
               <motion.div className="card p-3 bg-primaryBlack" whileHover={{ scale: 1.01 }}>
                 <h2 className="card-title h4 inline">{movie.title} {getYear(movie.release_date)}</h2>
-                <p className="card-text flex align-middle items-center mt-2 h5">
-                  <FaStar className="inline text-primaryYellow w-10 text-xl" />{movie.vote_average.toFixed(2)}
-                </p>
+                <p className="card-text flex align-middle items-center mt-3 h5"><FaStar className="inline text-primaryYellow w-10 text-xl"/>{movie.vote_average == 0 ? "Não existe avaliação" : (movie.vote_average.toFixed(1))}</p>
                 <p className="tagline italic text-tertiaryBlack">{movie.tagline ? (`"${movie.tagline}"`) : ("")}</p>
               </motion.div>
 
