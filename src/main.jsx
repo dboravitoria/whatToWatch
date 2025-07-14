@@ -5,6 +5,7 @@ import Home from './pages/Home.jsx'
 import Movie from './pages/Movie.jsx'
 import Serie from './pages/Serie.jsx'
 import Search from './pages/Search.jsx'
+import NotFound from './components/NotFound.jsx'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route element={<App/>}>
             <Route path='/' element={<Home />}/>
+            <Route path="*" element={<NotFound />} />
             <Route path='/movie/:id' element={<Movie />}/>
             <Route path='/tv/:id' element={<Serie />}/>
             <Route path='/search' element={<Search />}/>

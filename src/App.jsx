@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Outlet } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import AnimationIntro from './components/AnimationIntro'
+import ScrollToTop from "./components/ScrollToTop"
+
 import Footer from "./components/Footer"
 export default function App() {
     const [showSplash, setShowSplash] = useState(true)
@@ -11,6 +13,7 @@ export default function App() {
           {showSplash && <AnimationIntro onFinish={() => setShowSplash(false)} />}
           <Navbar/>
           <Outlet/>
+          <ScrollToTop />
           <Footer/>
         </div>
       </>

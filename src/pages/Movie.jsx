@@ -19,7 +19,7 @@ export default function Movie() {
   const [cast, setCast] = useState([])
   const [director, setDirector] = useState("")
   const handleComeback = useComeback()
-
+  
 
   const getMovie = async (url) => {
     const res = await fetch(url)
@@ -51,9 +51,6 @@ export default function Movie() {
       setTrailerUrl(`https://www.youtube.com/embed/${trailer.key}`)
     }
   }
-
-  
-
 
   useEffect(() => {
     const movieUrl = `${searchUrl}${id}?${apiKey}&language=pt-BR`
@@ -162,6 +159,8 @@ export default function Movie() {
                 <p className="tagline italic text-tertiaryBlack">{movie.tagline ? (`"${movie.tagline}"`) : ("")}</p>
               </motion.div>
 
+              
+
               {trailerUrl && (
                 <motion.div
                   className="trailer mt-10"
@@ -192,6 +191,7 @@ export default function Movie() {
                             ))) : (<p className="font-bold text-tertiaryBlack">Não informado</p>)}
                         </ul>
                       </li>
+                      
                     </div>
                   </motion.div>
                 </motion.div>
