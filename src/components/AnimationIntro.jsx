@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function SplashOverlay({ onFinish }) {
+
+  const urlAnimation = import.meta.env.VITE_LOTTIE_ANIMATION
   useEffect(() => {
     const timer = setTimeout(() => {
       onFinish()
@@ -32,10 +34,10 @@ export default function SplashOverlay({ onFinish }) {
       <p>Prepare-se para o espetáculo!</p>
       <div style={{ marginTop: '2rem', width:"50%", height: "auto" }}>
         <DotLottieReact
-          src="https://lottie.host/df92f88f-07ed-41c2-ad1f-dc8717a1496d/O013tJxgvr.lottie"
-          loop
-          autoplay
-        />
+            src={urlAnimation}
+            loop
+            autoplay
+          />
       </div>
 
     </div>

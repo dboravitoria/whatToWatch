@@ -8,7 +8,7 @@ import notFound from '../../public/notFound.webp'
 import { motion  } from "framer-motion";
 
 
-const searchUrl = import.meta.env.VITE_URL_API
+const searchUrl = import.meta.env.VITE_URL_API_MOVIE
 const apiKey = import.meta.env.VITE_KEY_API
 const imgSearch = import.meta.env.VITE_IMG
 
@@ -59,7 +59,7 @@ export default function Movie() {
     const movieUrl = `${searchUrl}${id}?${apiKey}&language=pt-BR`
     getMovie(movieUrl)
     getTrailer()
-    getCredits() // <<< adiciona essa linha aqui
+    getCredits() 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

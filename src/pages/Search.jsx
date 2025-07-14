@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import MovieCard from "../components/MovieCard"
 import { ClipLoader } from "react-spinners"
 import { FaFastBackward, FaStepBackward, FaFastForward, FaStepForward } from "react-icons/fa";
-
-const searchUrl = import.meta.env.VITE_SEARCH
+import Card from "../components/Card";
+const moviesSearchUrl = import.meta.env.VITE_SEARCH_MOVIE
+const seriesSearchUrl = import.meta.env.VITE_SEARCH_SERIES
 const apiKey = import.meta.env.VITE_KEY_API
 
 export default function Search() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchParams] = useSearchParams()
   const [movies, setMovies] = useState([])
+  const [series, setSeries] = useState([])
+  const [combinedResults, setCombinedResults] = useState([])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
   const query = searchParams.get("q")
@@ -18,29 +20,44 @@ export default function Search() {
   const getSearchResults = async () => {
     try {
       setIsLoading(true)
-      const url = `${searchUrl}?${apiKey}&query=${query}&page=${page}&language=pt-BR`
-      const res = await fetch(url)
-      const data = await res.json()
-      setMovies(data.results.slice(0, 18))
-      setTotalPages(data.total_pages)
+
+      const moviesRes = await fetch(`${moviesSearchUrl}?${apiKey}&query=${query}&page=${page}&language=pt-BR`)
+      const moviesData = await moviesRes.json()
+
+      const seriesRes = await fetch(`${seriesSearchUrl}?${apiKey}&query=${query}&page=${page}&language=pt-BR`)
+      const seriesData = await seriesRes.json()
+
+      setMovies(moviesData.results.slice(0, 9))
+      setSeries(seriesData.results.slice(0, 9))
+
+      setTotalPages(Math.min(moviesData.total_pages, 500))
+
     } catch (error) {
-      console.error("Erro ao buscar filmes:", error)
+      console.error("Erro ao buscar filmes e séries:", error)
     } finally {
       setIsLoading(false)
     }
   }
 
+  useEffect(() => {
+    const combined = [...movies, ...series]
+    combined.sort((a, b) => b.vote_average - a.vote_average)
+    setCombinedResults(combined)
+  }, [movies, series])
+
+  useEffect(() => {
+    if (query) {
+      getSearchResults()
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, page])
+
   const handlePageChange = (newPage) => {
     if (newPage !== page && newPage >= 1 && newPage <= totalPages) {
       setPage(newPage)
-      window.scrollTo({ top: 0, behavior: "smooth" })
     }
   }
-
-  useEffect(() => {
-    getSearchResults()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, page])
 
   return (
     <>
@@ -56,89 +73,72 @@ export default function Search() {
       ) : (
         <>
           <div className="row justify-content-center g-4 gap-4">
-            {movies.length > 0 ? (
-              movies.map((movie) => (
-                <MovieCard movie={movie} key={movie.id} />
+            {combinedResults.length > 0 ? (
+              combinedResults.map((item) => (
+                <Card item={item} key={`${item.media_type}-${item.id}`} />
               ))
             ) : (
               <p className="text-primaryRed uppercase text-center font-bold">
-                Nenhum filme encontrado ❌
+                Nenhum resultado encontrado ❌
               </p>
             )}
           </div>
 
           <div className="flex justify-center gap-2 mt-8 flex-wrap">
-            {/* Primeira */}
-            
-
             {page > 1 && (
-                      <button
-                        onClick={() => handlePageChange(1)}
-                        className="px-4 py-2 rounded items-center flex justify-center
-                        text-white card
-                        bg-primaryBlack hover:bg-secondaryRed"
-                      >
-                        <FaFastBackward/>
-                      </button>
-                    )}
-
-            {/* Anterior */}
-            {page > 1 && (
-          <button
-            onClick={() => handlePageChange(page - 1)}
-            className="px-4 py-2 rounded items-center flex justify-center
-            text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
-          >
-            <FaStepBackward/>
-          </button>
-        )}
-
-            {/* Páginas numeradas */}
-            {(() => {
-          const paginationRange = 2
-          const startPage = Math.max(1, page - paginationRange)
-          const endPage = Math.min(totalPages, page + paginationRange)
-
-          return Array.from({ length: endPage - startPage + 1 }, (_, index) => {
-            const pageNumber = startPage + index
-            return (
               <button
-                key={pageNumber}
-                onClick={() => handlePageChange(pageNumber)}
-                className={`px-4 py-2 rounded card ${
-                  pageNumber === page
-                    ? "bg-primaryYellow text-black font-bold"
-                    : "bg-secundaryBlack text-white hover:bg-secondaryYellow"
-                }`}
+                onClick={() => handlePageChange(1)}
+                className="px-4 py-2 rounded flex justify-center items-center text-white card bg-primaryBlack hover:bg-secondaryRed"
               >
-                {pageNumber}
+                <FaFastBackward />
               </button>
-            )
-          })
-        })()}
+            )}
+            {page > 1 && (
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                className="px-4 py-2 rounded flex justify-center items-center text-white card bg-primaryBlack hover:bg-secondaryRed"
+              >
+                <FaStepBackward />
+              </button>
+            )}
+            {(() => {
+              const paginationRange = 2
+              const startPage = Math.max(1, page - paginationRange)
+              const endPage = Math.min(totalPages, page + paginationRange)
 
-            {/* Próxima */}
+              return Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                const pageNumber = startPage + index
+                return (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`px-4 py-2 rounded card ${
+                      pageNumber === page
+                        ? "bg-primaryYellow text-black font-bold"
+                        : "bg-secundaryBlack text-white hover:bg-secondaryYellow"
+                    }`}
+                  >
+                    {pageNumber}
+                  </button>
+                )
+              })
+            })()}
             {page < totalPages && (
-          <button
-            onClick={() => handlePageChange(page + 1)}
-            className="px-4 py-2 rounded items-center flex justify-center
-            text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
-          >
-            <FaStepForward/>
-          </button>
-        )}
-        {page < totalPages && (
-        <button
-          onClick={() => handlePageChange(totalPages)}
-          className="px-4 py-2 rounded items-center flex justify-center
-            text-white card
-            bg-primaryBlack hover:bg-secondaryRed"
-        >
-          <FaFastForward/>
-        </button>
-      )}
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                className="px-4 py-2 rounded flex justify-center items-center text-white card bg-primaryBlack hover:bg-secondaryRed"
+              >
+                <FaStepForward />
+              </button>
+            )}
+            {page < totalPages && (
+              <button
+                onClick={() => handlePageChange(totalPages)}
+                className="px-4 py-2 rounded flex justify-center items-center text-white card bg-primaryBlack hover:bg-secondaryRed"
+              >
+                <FaFastForward />
+              </button>
+            )}
           </div>
         </>
       )}
