@@ -9,8 +9,9 @@ export default function Card({ item, showLink = true }) {
   const urlImg = import.meta.env.VITE_IMG
 
   // Define título e data flexível (filme ou série)
-  const title = item.title || item.name || "Título desconhecido"
-  const date = item.release_date || item.first_air_date || ""
+  const title = item.title || "Série - "+item.name || "Título desconhecido"
+  const date = item.release_date && item.release_date !== 0 ? item.release_date : item.first_air_date || ""
+
 
   // Define o tipo da mídia para gerar o link (tv = série)
   const mediaType = item.media_type || (item.first_air_date ? "tv" : "movie")
@@ -37,7 +38,7 @@ export default function Card({ item, showLink = true }) {
 
         <div className="card-body">
           <h2 className="card-title h4 inline">
-            {title} {getYear(date)}
+            {title} {date != 0 ? <span className="text-tertiaryBlack">{getYear(date)}</span>: ""}
           </h2>
           <p className="card-text flex align-middle items-center mt-3 h5">
             <FaStar className="inline text-primaryYellow w-10 text-xl" />

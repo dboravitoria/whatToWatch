@@ -26,3 +26,16 @@ export const formatHour = (hour)=>{
  
   }
 
+export function getCountryInfo(code) {
+  try {
+    const displayNames = new Intl.DisplayNames(['pt-BR'], { type: 'region' })
+    const name = displayNames.of(code.toUpperCase()) || code
+    const flag = code
+      .toUpperCase()
+      .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt()))
+    return `${flag} ${name}`
+  } catch (error) {
+     return "Erro: ", error.message
+  }
+}
+

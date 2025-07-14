@@ -46,6 +46,10 @@ export default function Search() {
   }, [movies, series])
 
   useEffect(() => {
+      setPage(1)
+    }, [query])
+
+  useEffect(() => {
     if (query) {
       getSearchResults()
     }

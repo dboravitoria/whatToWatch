@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaUserGroup, MdTimer, IoMdArrowRoundBack } from '../utils/icones'
-import { formatDate, formatHour, getYear } from "../utils/format"
+import { BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaUserGroup, MdTimer, IoMdArrowRoundBack, PiPopcornFill, IoStar,IoLayers, FaEarthAmericas } from '../utils/icones'
+import { formatDate, formatHour, getYear, getCountryInfo } from "../utils/format"
 import { useComeback } from "../hooks/useComeback"
 import notFound from '../../public/notFound.webp'
 // eslint-disable-next-line no-unused-vars
@@ -27,7 +27,7 @@ export default function Serie() {
   const getCredits = async () => {
     const res = await fetch(`${searchUrl}${id}/credits?${apiKey}`)
     const data = await res.json()
-    const mainCast = data.cast.slice(0, 5)
+    const mainCast = data.cast.slice(0, 10)
     setCast(mainCast)
   }
 
@@ -52,6 +52,7 @@ export default function Serie() {
 
   return (
     <>
+    {console.log(serie)}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
         <div className="row justify-center gap-4 mb-10">
           {serie && (
@@ -60,8 +61,7 @@ export default function Serie() {
                 className="col-4"
                 initial={{ x: -100, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8 }}
-              >
+                transition={{ duration: 0.8 }}>
                 <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
                   <button className="card px-4 py-2 mt-5 bg-primaryBlack hover:bg-primaryRed" onClick={handleComeback}>
                     <IoMdArrowRoundBack />
@@ -71,8 +71,7 @@ export default function Serie() {
                 <motion.div
                   className="card mt-5 p-2 rounded-md bg-primaryBlack shadow-md"
                   whileHover={{ scale: 1.01 }}
-                  transition={{ type: 'spring', stiffness: 200 }}
-                >
+                  transition={{ type: 'spring', stiffness: 200 }}>
                   {serie.poster_path ? (
                     <motion.img
                       src={imgSearch + serie.poster_path}
@@ -81,39 +80,61 @@ export default function Serie() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 1 }}
-                    />
-                  ) : (
-                    <img src={notFound} alt="Imagem não encontrada..." className="card-img-top rounded-md mt-4" />
-                  )}
+                    />):(
+                    <img src={notFound} alt="Imagem não encontrada..." className="card-img-top rounded-md mt-4" />)}
 
                   <ul className="list-group list-group-flush *:bg-primaryBlack">
+
+                    <li className="list-group-item *:inline">
+                      <h3 className="font-bold inline"><PiPopcornFill className="inline mb-1 text-primaryYellow mr-2"/> Gênero: </h3>
+                      <p className="text-tertiaryBlack">
+                        {serie.release_date !== 0 ? (
+                          serie.genres.map((genre, index) => (
+                            index === serie.genres.length - 1 ? genre.name : `${genre.name}/`))) : ("Não informado")}</p>
+                    </li>
+
                     <li className="list-group-item *:inline">
                       <h3 className="font-bold inline">
-                        <FaCalendarAlt className="inline mb-1 text-primaryYellow mr-2" /> Estreia:
-                      </h3>
+                        <FaCalendarAlt className="inline mb-1 text-primaryYellow mr-2" /> Estreia: </h3>
                       <p className="text-tertiaryBlack">{formatDate(serie.first_air_date)}</p>
                     </li>
+
+                    <li className="list-group-item *:inline">
+                    <h3 className="font-bold inline">
+                      <IoLayers className="inline mb-1 text-primaryYellow mr-2" /> Temporadas: </h3>
+                    <p className="text-tertiaryBlack">
+                      {serie.number_of_seasons > 0 ? serie.number_of_seasons : "Não informado"}</p>
+                  </li>
+
+                  <li className="list-group-item *:inline">
+                      <h3 className="font-bold inline">
+                        <MdTimer className="inline mb-1 text-primaryYellow mr-2" /> Duração média por Epsódio: </h3>
+                      <p className="text-tertiaryBlack">
+                        {serie.episode_run_time.length > 0 ? formatHour( Math.floor( serie.episode_run_time.reduce((acc, dur) => acc + dur, 0) / serie.episode_run_time.length)): 'Não disponível'}</p>
+                    </li>
+
+
                     <li className="list-group-item *:inline">
                       <h3 className="font-bold inline">
-                        <MdTimer className="inline mb-1 text-primaryYellow mr-2" /> Duração média:
-                      </h3>
-                      <p className="text-tertiaryBlack">{serie.episode_run_time.length > 0 ? formatHour(serie.episode_run_time[0]) : 'Não disponível'}</p>
+                        <FaEarthAmericas className="inline mb-1 text-primaryYellow mr-2" /> País de Origem: </h3>
+                      <p className="text-tertiaryBlack">
+                        {serie.origin_country.length > 0
+                          ? serie.origin_country.map(getCountryInfo).join(", ")
+                          : "Não disponível"}
+                      </p>
                     </li>
-                    <li className="list-group-item">
-                      <h3 className="font-bold mt-3">
-                        <FaUserGroup className="inline mb-1 mr-2 text-primaryYellow" /> Elenco principal:
-                      </h3>
-                      <ul className="text-white text-sm list-disc pl-5 mt-2">
-                        {cast.length > 0 ? (
-                          cast.map(actor => (
-                            <li key={actor.id}>
-                              {actor.name} / <span className="italic text-tertiaryBlack">{actor.character}</span>
-                            </li>
-                          ))
-                        ) : (
-                          <li>Elenco não disponível</li>
-                        )}
-                      </ul>
+
+                    <li className="list-group-item *:inline">
+                      <p className="font-bold mt-3">
+                        <IoStar className="inline mb-1 text-primaryYellow mr-2" />
+                        Diretor: {" "}
+                        <span className="text-tertiaryBlack">
+                          {serie.created_by.length > 0
+                            ? serie.created_by.map((diretor, index) =>
+                                index === serie.created_by.length - 1
+                                  ? diretor.name: `${diretor.name}, `): "Não informado"}
+                        </span>
+                      </p>
                     </li>
                   </ul>
                 </motion.div>
@@ -157,6 +178,12 @@ export default function Serie() {
                           <BsFillFileEarmarkTextFill className="inline text-primaryYellow mb-1 mr-2" /> Sinopse:
                         </h2>
                         <p>{serie.overview}</p>
+                        <li className="list-group-item mt-3">
+                          <h3 className="font-bold mt-3">
+                            <FaUserGroup className="inline mb-1 mr-2 text-primaryYellow" /> Elenco principal: </h3>
+                          <ul className="text-white text-sm list-disc pl-5 mt-2">
+                            {cast.length > 0 ? (cast.map(actor => (<li key={actor.id}>{actor.name} / <span className="italic text-tertiaryBlack">{actor.character}</span></li>))) : (<li>Elenco não disponível</li>)}</ul>
+                        </li>
                       </div>
                     </motion.div>
                   </motion.div>

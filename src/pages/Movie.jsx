@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import {BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaWallet, FaUserGroup, MdTimer, SlGraph, IoMdArrowRoundBack, IoStar} from '../utils/icones'
-import { formatCurrency, formatDate, formatHour, getYear } from "../utils/format";
+import {BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaWallet, FaUserGroup, MdTimer, SlGraph, IoMdArrowRoundBack, IoStar, PiPopcornFill, FaEarthAmericas} from '../utils/icones'
+import { formatCurrency, formatDate, formatHour, getYear, getCountryInfo } from "../utils/format";
 import { useComeback } from "../hooks/useComeback";
 import notFound from '../../public/notFound.webp'
 // eslint-disable-next-line no-unused-vars
@@ -66,6 +66,7 @@ export default function Movie() {
 
   return (
     <>
+    {console.log(movie)}
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
       <div className="row justify-center gap-4 mb-10">
         
@@ -105,39 +106,44 @@ export default function Movie() {
                   <img src={notFound} alt="Imagem não encontrada..." className="card-img-top rounded-md mt-4" />
                 )}
                 <ul className="list-group list-group-flush *:bg-primaryBlack">
+                  
+                  <li className="list-group-item *:inline">
+                    <h3 className="font-bold inline"><PiPopcornFill className="inline mb-1 text-primaryYellow mr-2"/> Gênero: </h3>
+                    <p className="text-tertiaryBlack">
+                      {movie.release_date !== 0 ? (
+                        movie.genres.map((genre, index) => (
+                          index === movie.genres.length - 1 ? genre.name : `${genre.name}/`))) : ("Não informado")}</p>
+
+                  </li>
+
+
                   <li className="list-group-item *:inline">
                     <h3 className="font-bold inline"><FaCalendarAlt className="inline mb-1 text-primaryYellow mr-2"/> Lançamento: </h3>
-                    <p className="text-tertiaryBlack">{formatDate(movie.release_date)}</p>
+                    <p className="text-tertiaryBlack">{movie.release_date != 0 ? (formatDate(movie.release_date)) : ("Não informado")}</p>
                   </li>
                   <li className="list-group-item *:inline">
                     <h3 className="font-bold inline"><FaWallet className="inline mb-1 text-primaryYellow mr-2" /> Orçamento: </h3>
-                    <p className="text-tertiaryBlack">{formatCurrency(movie.budget)}</p>
+                    <p className="text-tertiaryBlack">{movie.budget > 0 ? (formatCurrency(movie.budget)) : ("Não informado")}</p>
                   </li>
                   <li className="list-group-item *:inline">
                     <h3 className="font-bold inline"><SlGraph className="inline mb-1 text-primaryYellow mr-2"/> Receita: </h3>
-                    <p className="text-tertiaryBlack">{formatCurrency(movie.revenue)}</p>
+                    <p className="text-tertiaryBlack">{movie.revenue > 0 ? (formatCurrency(movie.revenue)) : ("Não informado")}</p>
                   </li>
                   <li className="list-group-item *:inline">
                     <h3 className="font-bold inline"><MdTimer className="inline mb-1 text-primaryYellow mr-2" /> Duração: </h3>
-                    <p className="text-tertiaryBlack">{formatHour(movie.runtime)}</p>
+                    <p className="text-tertiaryBlack">{movie.runtime > 0 ? (formatHour(movie.runtime)) : ("Não informado")}</p>
                   </li>
                   <li className="list-group-item *:inline">
-                    <p className="font-bold mt-3"><IoStar className="inline mb-1 text-primaryYellow mr-2"/> Diretor: <span className="text-tertiaryBlack ">{director || "Não disponível"}</span></p>
+                    <h3 className="font-bold inline">
+                      <FaEarthAmericas className="inline mb-1 text-primaryYellow mr-2" /> País de Origem: </h3>
+                    <p className="text-tertiaryBlack">
+                      {movie.origin_country.length > 0
+                        ? movie.origin_country.map(getCountryInfo).join(", ")
+                        : "Não disponível"}
+                    </p>
                   </li>
-
-                  <li className="list-group-item">
-                    <h3 className="font-bold mt-3"><FaUserGroup className="inline mb-1 mr-2 text-primaryYellow"/>Elenco principal:</h3>
-                    <ul className="text-white text-sm list-disc pl-5 mt-2">
-                      {cast.length > 0 ? (
-                        cast.map(actor => (
-                          <li key={actor.id}>
-                            {actor.name} / <span className="italic text-tertiaryBlack">{actor.character}</span>
-                          </li>
-                        ))
-                      ) : (
-                        <li>Elenco não disponível</li>
-                      )}
-                    </ul>
+                  <li className="list-group-item *:inline">
+                    <p className="font-bold mt-3"><IoStar className="inline mb-1 text-primaryYellow mr-2"/> Diretor: <span className="text-tertiaryBlack ">{director || "Não informado"}</span></p>
                   </li>
                 </ul>
                 
@@ -151,7 +157,7 @@ export default function Movie() {
               transition={{ duration: 0.8 }}
             >
               <motion.div className="card p-3 bg-primaryBlack" whileHover={{ scale: 1.01 }}>
-                <h2 className="card-title h4 inline">{movie.title} {getYear(movie.release_date)}</h2>
+                <h2 className="card-title h4 inline">{movie.title} {movie.release_date > 0 ? (getYear(movie.release_date)) : ("")}</h2>
                 <p className="card-text flex align-middle items-center mt-3 h5"><FaStar className="inline text-primaryYellow w-10 text-xl"/>{movie.vote_average == 0 ? "Não existe avaliação" : (movie.vote_average.toFixed(1))}</p>
                 <p className="tagline italic text-tertiaryBlack">{movie.tagline ? (`"${movie.tagline}"`) : ("")}</p>
               </motion.div>
@@ -179,6 +185,13 @@ export default function Movie() {
                         <BsFillFileEarmarkTextFill className="inline  text-primaryYellow mb-1 mr-2" /> Sinopse:
                       </h2>
                       <p>{movie.overview}</p>
+                      <li className="list-group-item mt-3">
+                        <h3 className="font-bold mt-3"><FaUserGroup className="inline mb-1 mr-2 text-primaryYellow"/>Elenco principal:</h3>
+                        <ul className="text-white text-sm list-disc pl-5 mt-2">
+                          {cast.length > 0 ? ( cast.map(actor => (<li key={actor.id}>{actor.name} / <span className="italic text-tertiaryBlack">{actor.character}</span></li>
+                            ))) : (<p className="font-bold text-tertiaryBlack">Não informado</p>)}
+                        </ul>
+                      </li>
                     </div>
                   </motion.div>
                 </motion.div>

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'   
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import {IoStar} from '../utils/icones'
 
 export default function SplashOverlay({ onFinish }) {
 
@@ -20,8 +21,8 @@ export default function SplashOverlay({ onFinish }) {
         left: 0,
         width: '100vw',
         height: '100vh',
-        backgroundColor: 'rgba(0,0,0,0.85)', // semi-preto por cima
-        zIndex: 9999, // fica na frente de tudo
+        backgroundColor: 'rgba(0,0,0,1)', 
+        zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -30,8 +31,12 @@ export default function SplashOverlay({ onFinish }) {
         flexDirection: 'column',
       }}
     >
-        
-      <p>Prepare-se para o espetáculo!</p>
+        <p className="font-bold uppercase">
+          <IoStar className="inline align-middle text-primaryYellow mr-1" />
+          Prepare-se para o espetáculo!
+          <IoStar className="inline align-middle text-primaryYellow ml-1" />
+        </p>
+
       <div style={{ marginTop: '2rem', width:"50%", height: "auto" }}>
         <DotLottieReact
             src={urlAnimation}
