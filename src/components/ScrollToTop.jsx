@@ -22,7 +22,7 @@ export default function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="bg-primaryYellow border-2 border-primaryBlack text-black p-3 rounded-full shadow-md hover:bg-secondaryYellow hover:border-2 transition duration-300 ease-in-out"
+          className="bg-primaryYellow drop-shadow-sm backdrop-blur-sm shadow-2xl  border-2 border-primaryBlack text-black p-3 rounded-full hover:bg-secondaryYellow hover:border-2 transition duration-300 ease-in-out"
           title="Voltar ao topo"
         >
           <FaArrowUp size={20} />

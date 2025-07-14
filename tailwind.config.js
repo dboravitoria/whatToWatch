@@ -16,7 +16,8 @@ export default {
         secondaryRed: '#b91c1c',
         primaryYellow: '#facc15',
         secondaryYellow: '#ca8a04'
-      }
+      },
+      
     },
   },
   plugins: [],
