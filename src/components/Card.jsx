@@ -1,11 +1,14 @@
-import { Link } from "react-router-dom"
-import { FaStar } from '../utils/icones.js'
-import notFound from '../../public/notFound.webp'
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
+//ícone e imagem
+import { FaStar } from '../utils/icones.js'
+import notFound from '../assets/notFound.webp' 
+//função
 import { getYear } from "../utils/format"
 
 export default function Card({ item, showLink = true }) {
+  // Define a URL base para as imagens
   const urlImg = import.meta.env.VITE_IMG
 
   // Define título e data flexível (filme ou série)
@@ -18,45 +21,27 @@ export default function Card({ item, showLink = true }) {
 
   return (
     <>
-      <div
-        className="card bg-primaryBlack shadow-sm backdrop-blur-xl drop-shadow-xl"
-        style={{ width: "24rem", height: "50rem" }}
-      >
-        {item.poster_path ? (
-          <img
-            src={urlImg + item.poster_path}
-            className="card-img-top mt-4 rounded-md"
-            alt={title}
-          />
-        ) : (
-          <img
-            src={notFound}
-            alt="Imagem não encontrada..."
-            className="card-img-top mt-4 rounded-md"
-          />
-        )}
+      <div className="card bg-primaryBlack shadow-sm backdrop-blur-xl drop-shadow-xl" style={{ width: "20rem", height: "45rem" }}>
+
+        {/* Exibe a imagem do filme ou série */}
+        {item.poster_path ? (<img src={urlImg + item.poster_path} className="card-img-top mt-4 rounded-md" alt={title}/>) : 
+        (<img src={notFound} alt="Imagem não encontrada..." className="card-img-top mt-4 rounded-md" />)}
 
         <div className="card-body">
+          {/* Exibe o título e a data */}
           <h2 className="card-title h4 inline">
             {title} {date != 0 ? <span className="text-tertiaryBlack">{getYear(date)}</span>: ""}
           </h2>
+
           <p className="card-text flex align-middle items-center mt-3 h5">
             <FaStar className="inline text-primaryYellow w-10 text-xl" />
-            {item.vote_average === 0
-              ? "Não existe avaliação"
-              : item.vote_average.toFixed(1)}
+            {item.vote_average === 0 ? "Não existe avaliação" : item.vote_average.toFixed(1)}
           </p>
 
           {showLink && (
             <Link to={`/${mediaType}/${item.id}`}>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="btn border-2 p-2 font-bold bg-primaryRed fixed-bottom d-block w-50 mx-auto mb-4 hover:text-primaryRed hover:border-primaryRed"
-              >
-                Detalhes
-              </motion.button>
+              {/* Botão de detalhes com animação */}
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 300 }} className="btn border-2 p-2 font-bold bg-primaryRed fixed-bottom d-block w-50 mx-auto mb-4 hover:text-primaryRed hover:border-primaryRed">Detalhes</motion.button>
             </Link>
           )}
         </div>

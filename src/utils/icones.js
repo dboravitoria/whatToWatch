@@ -1,3 +1,5 @@
+//arquivo de ícones utilizados no projeto
+
 import { BsFillFileEarmarkTextFill } from "react-icons/bs"
 import { FaFastBackward, FaStepBackward, FaFastForward, FaStepForward, FaStar, FaCalendarAlt,FaWallet, FaArrowUp } from "react-icons/fa";
 import { FaUserGroup, FaEarthAmericas } from "react-icons/fa6";

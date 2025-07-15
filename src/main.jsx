@@ -1,22 +1,27 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+//importando as páginas
+import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import Movie from './pages/Movie.jsx'
 import Serie from './pages/Serie.jsx'
 import Search from './pages/Search.jsx'
 import NotFound from './components/NotFound.jsx'
+//importando os estilos
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
-import App from './App.jsx'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      {/* Definindo as rotas do aplicativo */}
       <Routes>
         <Route element={<App/>}>
             <Route path='/' element={<Home />}/>
+            {/* Rota para página não encontrada */}
             <Route path="*" element={<NotFound />} />
             <Route path='/movie/:id' element={<Movie />}/>
             <Route path='/tv/:id' element={<Serie />}/>
@@ -24,5 +29,5 @@ createRoot(document.getElementById('root')).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )
