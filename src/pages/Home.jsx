@@ -20,15 +20,24 @@ export default function Home() {
 
   //função para buscar os filmes e séries mais bem avaliados
   const getTopRated = async (pageNumber) => {
+  try {
     const moviesRes = await fetch(`${moviesURL}top_rated?${apiKey}&language=pt-BR&page=${pageNumber}`)
-    const moviesData = await moviesRes.json()
+    if (!moviesRes.ok) throw new Error("Erro filmes: " + moviesRes.status)
+
     const seriesRes = await fetch(`${seriesURL}top_rated?${apiKey}&language=pt-BR&page=${pageNumber}`)
+    if (!seriesRes.ok) throw new Error("Erro séries: " + seriesRes.status)
+
+    const moviesData = await moviesRes.json()
     const seriesData = await seriesRes.json()
-    //retorna os 9 primeiros filmes e séries
+
     setTopMovies(moviesData.results.slice(0, 9))
     setTopSeries(seriesData.results.slice(0, 9))
     setTotalPages(Math.min(moviesData.total_pages, 500))
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error)
   }
+}
+
 
   //efeito colateral que traz os filmes e séries mais bem avaliados
   useEffect(() => {
