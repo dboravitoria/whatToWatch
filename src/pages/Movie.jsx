@@ -62,7 +62,7 @@ export default function Movie() {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
 
         {/* Cria um layout grid pra separar as informações */}
-        <div className="row justify-center gap-4 mb-10 max-w-full mx-auto">
+        <div className="row justify-center gap-4 mb-10 mt-24 max-w-full mx-auto">
           {movie && (
             <>
             {/* Lado esquerdo do grid */}
@@ -70,57 +70,57 @@ export default function Movie() {
 
               {/* Transição que faz aumentar o botão no hover */}
               <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
-                <button className="card px-4 py-2 mt-5 bg-primaryBlack hover:bg-primaryRed"
+                <button className="card px-4 py-2 mt-5 dark:bg-primaryBlack bg-tertiaryBlack dark:hover:bg-primaryRed hover:bg-primaryRed"
                 onClick={handleComeback}>
                   <IoMdArrowRoundBack />
                 </button>
               </motion.div>
 
               {/* Transição que aumenta um pouco o tamanho do poster */}
-              <motion.div className="card mt-5 p-2 rounded-md bg-primaryBlack shadow-md" whileHover={{ scale: 1.01 }} transition={{ type: 'spring', stiffness: 200 }}>
+              <motion.div className="card mt-5 p-2 rounded-md dark:bg-primaryBlack bg-tertiaryBlack shadow-md" whileHover={{ scale: 1.01 }} transition={{ type: 'spring', stiffness: 200 }}>
                 {movie.poster_path ? (
                   <motion.img src={imgSearch + movie.poster_path} className="card-img-top rounded-md mt-2" alt={movie.title} initial={{ opacity: 0 }} animate={{ opacity: 1 }}transition={{ duration: 1 }} /> ) : (
                   <img src={notFound} alt="Imagem não encontrada..." className="card-img-top rounded-md mt-4" />
                 )}
 
                 {/* Lista de informações do filme, todas tratadas pra caso não retorne nada da API */}
-                <ul className="list-group list-group-flush *:bg-primaryBlack *:inline">
+                <ul className="list-group list-group-flush *:dark:bg-primaryBlack *:bg-tertiaryBlack *:inline">
 
                   {/* Traz uma lista de gêneros do filme */}
                   <li className="list-group-item *:inline">
-                    <h3 className="font-bold inline"><PiPopcornFill className="inline mb-1 text-primaryYellow mr-2"/> Gênero: </h3>
-                    <p className="text-tertiaryBlack"> {movie.release_date !== 0 ? ( movie.genres.map((genre, index) => ( index === movie.genres.length - 1 ? genre.name : `${genre.name}/`))) : ("Não informado")}</p>
+                    <h3 className="font-bold inline"><PiPopcornFill className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2"/> Gênero: </h3>
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack"> {movie.release_date !== 0 ? ( movie.genres.map((genre, index) => ( index === movie.genres.length - 1 ? genre.name : `${genre.name}/`))) : ("Não informado")}</p>
                   </li>
 
                   {/*Traz o dia do lançamento*/}
                   <li className="list-group-item *:inline">
-                    <h3 className="font-bold inline"><FaCalendarAlt className="inline mb-1 text-primaryYellow mr-2"/> Lançamento: </h3>
-                    <p className="text-tertiaryBlack">{movie.release_date != 0 ? (formatDate(movie.release_date)) : ("Não informado")}</p>
+                    <h3 className="font-bold inline"><FaCalendarAlt className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2"/> Lançamento: </h3>
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack">{movie.release_date != 0 ? (formatDate(movie.release_date)) : ("Não informado")}</p>
                   </li>
 
                   {/* Traz o orçamento */}
                   <li className="list-group-item *:inline">
-                    <h3 className="font-bold inline"><FaWallet className="inline mb-1 text-primaryYellow mr-2" /> Orçamento: </h3>
-                    <p className="text-tertiaryBlack">{movie.budget > 0 ? (formatCurrency(movie.budget)) : ("Não informado")}</p>
+                    <h3 className="font-bold inline"><FaWallet className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" /> Orçamento: </h3>
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack">{movie.budget > 0 ? (formatCurrency(movie.budget)) : ("Não informado")}</p>
                   </li>
 
                   {/* Qual foi o ganho em média com o filme */}
                   <li className="list-group-item *:inline">
-                    <h3 className="font-bold inline"><SlGraph className="inline mb-1 text-primaryYellow mr-2"/> Receita: </h3>
-                    <p className="text-tertiaryBlack">{movie.revenue > 0 ? (formatCurrency(movie.revenue)) : ("Não informado")}</p>
+                    <h3 className="font-bold inline"><SlGraph className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2"/> Receita: </h3>
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack">{movie.revenue > 0 ? (formatCurrency(movie.revenue)) : ("Não informado")}</p>
                   </li>
 
                   {/* Duração do filme formatado por hora e minutos */}
                   <li className="list-group-item *:inline">
-                    <h3 className="font-bold inline"><MdTimer className="inline mb-1 text-primaryYellow mr-2" /> Duração: </h3>
-                    <p className="text-tertiaryBlack">{movie.runtime > 0 ? (formatHour(movie.runtime)) : ("Não informado")}</p>
+                    <h3 className="font-bold inline"><MdTimer className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" /> Duração: </h3>
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack">{movie.runtime > 0 ? (formatHour(movie.runtime)) : ("Não informado")}</p>
                   </li>
 
                   {/* País de origem do filme, e traz a bandeirinha também */}
                   <li className="list-group-item *:inline">
                     <h3 className="font-bold inline">
-                      <FaEarthAmericas className="inline mb-1 text-primaryYellow mr-2" /> País de Origem: </h3>
-                    <p className="text-tertiaryBlack">
+                      <FaEarthAmericas className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" /> País de Origem: </h3>
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack">
                       {movie.origin_country.length > 0
                         ? movie.origin_country.map(getCountryInfo).join(", ")
                         : "Não disponível"}
@@ -129,7 +129,7 @@ export default function Movie() {
 
                   {/* Diretor do filme, caso não tenha, traz "Não informado" */}
                   <li className="list-group-item *:inline">
-                    <p className="font-bold mt-3"><IoStar className="inline mb-1 text-primaryYellow mr-2"/> Diretor: <span className="text-tertiaryBlack ">{director || "Não informado"}</span></p>
+                    <p className="font-bold mt-3"><IoStar className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2"/> Diretor: <span className="dark:text-tertiaryBlack text-neutral-700 ">{director || "Não informado"}</span></p>
                   </li>
                 </ul>
               </motion.div>
@@ -140,13 +140,13 @@ export default function Movie() {
             <motion.div className="col-5 mt-32" initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 
               {/* Transição que faz aumentar o tamanho do card */}
-              <motion.div className="card p-3 bg-primaryBlack" whileHover={{ scale: 1.01 }}>
+              <motion.div className="card p-3 dark:bg-primaryBlack bg-tertiaryBlack" whileHover={{ scale: 1.01 }}>
                 {/* Card com nome, ano, nota e slogam do filme */}
                 <h2 className="card-title h4 inline">{movie.title} {movie.release_date > 0 ? (getYear(movie.release_date)) : ("")}</h2>
                 <p className="card-text flex align-middle items-center mt-3 h5">
                   <FaStar className="inline text-primaryYellow w-10 text-xl"/>{movie.vote_average == 0 ? "Não existe avaliação" : (movie.vote_average.toFixed(1))}
                 </p>
-                <p className="tagline italic text-tertiaryBlack">{movie.tagline ? (`"${movie.tagline}"`) : ("")}</p>
+                <p className="tagline italic dark:text-tertiaryBlack text-secundaryBlack">{movie.tagline ? (`"${movie.tagline}"`) : ("")}</p>
               </motion.div>
 
 
@@ -159,18 +159,18 @@ export default function Movie() {
                   </div>
 
                   {/* Card com a sinopse e elenco do filme */}
-                  <motion.div className="card mt-5 bg-primaryBlack" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+                  <motion.div className="card mt-5 dark:bg-primaryBlack bg-tertiaryBlack" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
                     <div className="card-body">
                       <h2 className="font-bold mb-4">
-                        <BsFillFileEarmarkTextFill className="inline  text-primaryYellow mb-1 mr-2" /> Sinopse:
+                        <BsFillFileEarmarkTextFill className="inline  dark:text-primaryYellow text-primaryRed mb-1 mr-2" /> Sinopse:
                       </h2>
                       <p>{movie.overview}</p>
                       <li className="list-group-item mt-3">
-                        <h3 className="font-bold mt-3"><FaUserGroup className="inline mb-1 mr-2 text-primaryYellow"/>Elenco principal:</h3>
+                        <h3 className="font-bold mt-3"><FaUserGroup className="inline mb-1 mr-2 dark:text-primaryYellow text-primaryRed"/>Elenco principal:</h3>
                         {/* Lista de atores do filme, caso não tenha, traz "Não informado" */}
-                        <ul className="text-white text-sm list-disc pl-5 mt-2">
-                          {cast.length > 0 ? ( cast.map(actor => (<li key={actor.id}>{actor.name} / <span className="italic text-tertiaryBlack">{actor.character}</span></li>
-                            ))) : (<p className="font-bold text-tertiaryBlack">Não informado</p>)}
+                        <ul className="dark:text-white text-secundaryBlack text-sm list-disc pl-5 mt-2">
+                          {cast.length > 0 ? ( cast.map(actor => (<li key={actor.id}>{actor.name} / <span className="italic dark:text-tertiaryBlack text-neutral-700">{actor.character}</span></li>
+                            ))) : (<p className="font-bold dark:text-tertiaryBlack text-secundaryBlack">Não informado</p>)}
                         </ul>
                       </li>
                     </div>

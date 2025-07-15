@@ -2,11 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.light{
-    background-color: aliceblue;
-    color: #242424;
+body{
+    background-color: #ddd;
 }
-.dark{
-    background-color:#242424;
-    color: aliceblue;
+.dark {
+    background-color: #242424;
 }

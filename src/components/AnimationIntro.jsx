@@ -17,7 +17,7 @@ export default function SplashOverlay({ onFinish }) {
 
   return (
     //cobre o fundo da tela de preto pra aparecer a animação
-    <div style={{position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,1)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#facc15', fontSize: '2rem', flexDirection: 'column'}}>
+    <div className='fixed top-0 left-0 bg-primaryBlack w-full h-full z-50 flex items-center justify-center text-primaryYellow text-4xl flex-col'>
 
         <p className="font-bold uppercase">
           <IoStar className="inline align-middle text-primaryYellow mr-1" />
@@ -26,7 +26,7 @@ export default function SplashOverlay({ onFinish }) {
         </p>
 
       {/* Exibe a animação Lottie   */}
-      <div style={{ marginTop: '2rem', width:"50%", height: "auto" }}>
+      <div style={{ marginTop: '2rem', width:"75%", height: "auto" }}>
         <DotLottieReact src={urlAnimation} loop autoplay />
       </div>
     </div>

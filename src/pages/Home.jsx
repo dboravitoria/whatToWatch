@@ -54,19 +54,21 @@ export default function Home() {
 
   return (
     <>
-      {/* Título que varia se for a primeira página */}
-      <h1 className="font-bold text-4xl p-4 text-primaryYellow text-center m-5">
-        {page === 1 ? "Filmes e Séries mais bem avaliados:" : "Ordem decrescente de avaliação."}
-      </h1>
-
-      {/* Exibe os filmes e séries mais bem avaliados */}
-      <div className="row justify-content-center g-4 gap-4">
-        {/* Se ainda estiver carregando, mostra a aniamação de loading */}
-        {isLoading ? (<Loading />) : 
-        (combinedResults.length > 0 ? ( combinedResults.map(item => (<Card item={item} key={item.id} />))) : (<p className="text-primaryRed text-center font-bold">Nenhum resultado encontrado</p>))}
-      </div>
-      {/* Exibe a paginação */}
-      <Pagination totalPages={totalPages} onPageChange={handlePageChange} page={page} />
+    <div className="bg-primaryWhite dark:bg-darkBack mt-40">
+      
+        {/* Título que varia se for a primeira página */}
+        <h1 className="font-bold text-4xl p-4 dark:text-primaryYellow text-primaryRed text-center m-5">
+          {page === 1 ? "Filmes e Séries mais bem avaliados:" : "Ordem decrescente de avaliação."}
+        </h1>
+        {/* Exibe os filmes e séries mais bem avaliados */}
+        <div className="row justify-content-center g-4 gap-4">
+          {/* Se ainda estiver carregando, mostra a aniamação de loading */}
+          {isLoading ? (<Loading />) :
+          (combinedResults.length > 0 ? ( combinedResults.map(item => (<Card item={item} key={item.id} />))) : (<p className="text-primaryRed text-center font-bold">Nenhum resultado encontrado</p>))}
+        </div>
+        {/* Exibe a paginação */}
+        <Pagination totalPages={totalPages} onPageChange={handlePageChange} page={page} />
+    </div>
     </>
   )
 }

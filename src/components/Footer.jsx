@@ -5,7 +5,7 @@ export default function Footer() {
 
   return (
         <>
-            <nav className="bg-primaryBlack fixed-bottom  p-4 block mx-auto text-center font-bold shadow-2xl border-t border-primaryYellow drop-shadow-sm backdrop-blur-sm">
+            <nav className="dark:bg-primaryBlack bg-darkBack fixed-bottom  p-4 block mx-auto text-center font-bold shadow-2xl border-t dark:border-primaryYellow border-primaryRed drop-shadow-sm backdrop-blur-sm">
             <div className="container-fluid">
               <Link target="_blank" className="navbar-brand text-primaryRed font-bold" to={siteTMDB}><span className="text-primaryYellow">&copy;</span> TMDB && What To Watch - 2025</Link>
             </div>

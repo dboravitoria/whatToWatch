@@ -66,27 +66,28 @@ export default function Search() {
 
   return (
     <>
-      {/* Título que exibe a query de busca */}
-      <h1 className="font-bold text-4xl p-4 text-primaryYellow text-center m-5">
-        Resultado: <span className="text-white uppercase">{query}</span>
-      </h1>
-
-      {/* Exibe o loading enquanto busca os resultados */}
-      {isLoading ? (<Loading message="Buscando resultados..." />) : (
-        <>
-          <div className="row justify-content-center g-4 gap-4">
-            {combinedResults.length > 0 ? (combinedResults.map((item) => (
-                <Card item={item} key={`${item.media_type}-${item.id}`} />))) : (
-              <p className="text-primaryRed uppercase text-center font-bold">
-                Nenhum resultado encontrado ❌
-              </p>
-            )}
-          </div>
-
-          {/* Componente de paginação */}
-          <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
-        </>
-      )}
+       <div className="mt-40">
+      
+        {/* Título que exibe a query de busca */}
+        <h1 className="font-bold text-4xl p-4 dark:text-primaryYellow text-primaryRed text-center m-5">
+          Resultado: <span className="dark:text-white text-secundaryBlack uppercase">{query}</span>
+        </h1>
+        {/* Exibe o loading enquanto busca os resultados */}
+        {isLoading ? (<Loading message="Buscando resultados..." />) : (
+          <>
+            <div className="row justify-content-center g-4 gap-4">
+              {combinedResults.length > 0 ? (combinedResults.map((item) => (
+                  <Card item={item} key={`${item.media_type}-${item.id}`} />))) : (
+                <p className="text-primaryRed uppercase text-center font-bold">
+                  Nenhum resultado encontrado ❌
+                </p>
+              )}
+            </div>
+            {/* Componente de paginação */}
+            <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+          </>
+        )}
+    </div>
     </>
   )
 }

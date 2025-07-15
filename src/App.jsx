@@ -11,7 +11,7 @@ export default function App() {
     const [showSplash, setShowSplash] = useState(true)
   return (
       <>
-        <div className="App overflow-x-hidden mb-24">
+        <div className="App overflow-x-hidden bg-primaryWhite dark:bg-darkBack mb-24">
           {/* Exibe a animação de introdução apenas uma vez */}
           {showSplash && <AnimationIntro onFinish={() => setShowSplash(false)} />}
           <Navbar/>

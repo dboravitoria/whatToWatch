@@ -9,7 +9,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
 
   return (
     //caixa de botões de paginação
-    <div className="flex justify-center gap-2 mt-8 flex-wrap">
+    <div className="flex justify-center  gap-2 mt-8 flex-wrap">
       {page > 1 && (
         <>
           {/* Botão de ir para a primeira página */}
@@ -27,7 +27,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
         const pageNumber = startPage + index
         return (
-          <button key={pageNumber} onClick={() => onPageChange(pageNumber)} className={`px-4 py-2 rounded card ${pageNumber === page ? "bg-primaryYellow text-black font-bold" : "bg-darkBack text-white hover:bg-secondaryYellow"}`}>{pageNumber}</button>)
+          <button key={pageNumber} onClick={() => onPageChange(pageNumber)} className={`px-4 py-2 rounded card ${pageNumber === page ? "bg-primaryRed dark:bg-primaryYellow text-black font-bold" : "bg-darkBack text-white dark:hover:bg-secondaryYellow hover:bg-secondaryRed"}`}>{pageNumber}</button>)
       })}
 
       {page < totalPages && (
