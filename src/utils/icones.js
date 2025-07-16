@@ -2,7 +2,7 @@
 
 import { BsFillFileEarmarkTextFill } from "react-icons/bs"
 import { FaFastBackward, FaStepBackward, FaFastForward, FaStepForward, FaStar, FaCalendarAlt,FaWallet, FaArrowUp, FaSun } from "react-icons/fa";
-import { FaUserGroup, FaEarthAmericas } from "react-icons/fa6";
+import { FaUserGroup, FaEarthAmericas, FaCirclePlay } from "react-icons/fa6";
 import { MdTimer, MdMovie } from "react-icons/md";
 import { SlGraph } from "react-icons/sl";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -12,4 +12,4 @@ import { PiPopcornFill, PiSunFill } from "react-icons/pi";
 import { RiMoonClearFill } from "react-icons/ri";
 
 
-export {BiSearchAlt2, BiCameraMovie,BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaWallet, FaUserGroup, FaFastBackward, FaStepBackward, FaFastForward, FaStepForward, MdTimer, SlGraph, IoMdArrowRoundBack, IoStar, PiPopcornFill, IoLayers, FaEarthAmericas, FaArrowUp, IoMenu, IoClose, IoTv, MdMovie, RiMoonClearFill, PiSunFill, IoInfiniteSharp, IoHomeSharp, FaSun}
+export {BiSearchAlt2, BiCameraMovie,BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaWallet, FaUserGroup, FaFastBackward, FaStepBackward, FaFastForward, FaStepForward, MdTimer, SlGraph, IoMdArrowRoundBack, IoStar, PiPopcornFill, IoLayers, FaEarthAmericas, FaArrowUp, IoMenu, IoClose, IoTv, MdMovie, RiMoonClearFill, PiSunFill, IoInfiniteSharp, IoHomeSharp, FaSun, FaCirclePlay}

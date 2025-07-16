@@ -21,7 +21,7 @@ export default function Card({ item, showLink = true }) {
 
   return (
     <>
-      <div className="card dark:bg-primaryBlack bg-tertiaryBlack shadow-sm backdrop-blur-xl drop-shadow-xl" style={{ width: "20rem", height: "45rem" }}>
+      <div className="card dark:bg-primaryBlack bg-tertiaryBlack shadow-sm backdrop-blur-xl drop-shadow-xl" style={{ width: "20rem", height: "50rem" }}>
 
         {/* Exibe a imagem do filme ou série */}
         {item.poster_path ? (<img src={urlImg + item.poster_path} className="card-img-top mt-4 rounded-md" alt={title}/>) : 

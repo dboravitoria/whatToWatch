@@ -1,5 +1,6 @@
 //importação dos hooks
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { useLoading } from "../hooks/useLoading" 
 //importação dos componentes
 import Card from "../components/Card"
@@ -16,32 +17,54 @@ export default function Home() {
   const [combinedResults, setCombinedResults] = useState([])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
+  const navigate = useNavigate()
   const { isLoading, withLoading } = useLoading() 
 
   //função para buscar os filmes e séries mais bem avaliados
   const getTopRated = async (pageNumber) => {
-    const moviesRes = await fetch(`${moviesURL}top_rated?${apiKey}&language=pt-BR&page=${pageNumber}`)
-    const moviesData = await moviesRes.json()
-    const seriesRes = await fetch(`${seriesURL}top_rated?${apiKey}&language=pt-BR&page=${pageNumber}`)
-    const seriesData = await seriesRes.json()
-    //retorna os 9 primeiros filmes e séries
-    console.log("Movies data:", moviesData)
-console.log("Series data:", seriesData)
+      try {
+        const moviesRes = await fetch(`${moviesURL}top_rated?${apiKey}&language=pt-BR&page=${pageNumber}`)
+        const seriesRes = await fetch(`${seriesURL}top_rated?${apiKey}&language=pt-BR&page=${pageNumber}`)
 
-    setTopMovies(Array.isArray(moviesData.results) ? moviesData.results.slice(0, 9) : [])
-setTopSeries(Array.isArray(seriesData.results) ? seriesData.results.slice(0, 9) : [])
+        if (!moviesRes.ok) {
+          if (moviesRes.status === 500) {
+            navigate('/500')
+            return
+          }
+          throw new Error("Erro ao buscar filmes")
+        }
 
-    setTotalPages(Math.min(moviesData.total_pages, 500))
-  }
+        if (!seriesRes.ok) {
+          if (seriesRes.status === 500) {
+            navigate('/500')
+            return
+          }
+          throw new Error("Erro ao buscar séries")
+        }
+
+        const moviesData = await moviesRes.json()
+        const seriesData = await seriesRes.json()
+
+        setTopMovies(Array.isArray(moviesData.results) ? moviesData.results.slice(0, 9) : [])
+        setTopSeries(Array.isArray(seriesData.results) ? seriesData.results.slice(0, 9) : [])
+        setTotalPages(Math.min(moviesData.total_pages, 500))
+
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error)
+        // Se quiser, pode mandar pra 500 aqui também, mas já fez nos status
+        // navigate('/500')
+      }
+    }
+
 
   //efeito colateral que traz os filmes e séries mais bem avaliados
   useEffect(() => {
-  withLoading(async () => {
-    await getTopRated(page)
-  })
-  window.scrollTo({ top: 0, behavior: "smooth" })
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [page])
+      withLoading(async () => {
+        await getTopRated(page)
+      })
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, navigate])
 
 
   //efeito colateral que combina os filmes e séries mais bem avaliados
@@ -70,12 +93,12 @@ setTopSeries(Array.isArray(seriesData.results) ? seriesData.results.slice(0, 9) 
         <div className="row justify-content-center g-4 gap-4">
           {/* Se ainda estiver carregando, mostra a aniamação de loading */}
           {isLoading ? (<Loading />) :
-  (!combinedResults || combinedResults.length === 0 ? (
-    <p className="text-primaryRed text-center font-bold">Nenhum resultado encontrado</p>
-  ) : (
-    combinedResults.map(item => (<Card item={item} key={item.id} />))
-  )
-)}
+          (!combinedResults || combinedResults.length === 0 ? (
+            <p className="text-primaryRed text-center font-bold">Nenhum resultado encontrado</p>
+          ) : (
+            combinedResults.map(item => (<Card item={item} key={item.id} />))
+          )
+        )}
 
         </div>
         {/* Exibe a paginação */}

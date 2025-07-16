@@ -26,7 +26,7 @@ export default function SplashOverlay({ onFinish }) {
         </p>
 
       {/* Exibe a animação Lottie   */}
-      <div style={{ marginTop: '2rem', width:"75%", height: "auto" }}>
+      <div style={{ marginTop: '2rem', width:"50%", height: "auto" }}>
         <DotLottieReact src={urlAnimation} loop autoplay />
       </div>
     </div>

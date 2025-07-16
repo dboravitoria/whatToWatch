@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { useComeback } from "../hooks/useComeback"
 
 //ícones e imagem
-import { BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaUserGroup, MdTimer, IoMdArrowRoundBack, PiPopcornFill, IoStar,IoLayers, FaEarthAmericas } from '../utils/icones'
+import { BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaUserGroup, MdTimer, IoMdArrowRoundBack, PiPopcornFill, IoStar,IoLayers, FaEarthAmericas, FaCirclePlay } from '../utils/icones'
 import notFound from '../assets/notFound.webp' 
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion"
@@ -23,6 +23,7 @@ export default function Serie() {
   const [serie, setSerie] = useState(null)
   const [trailerUrl, setTrailerUrl] = useState(null)
   const [cast, setCast] = useState([])
+  const [watchProviders, setWatchProviders] = useState([])
   const handleComeback = useComeback()
 
   // Efeito para buscar os dados da série quando o componente é montado
@@ -38,6 +39,14 @@ export default function Serie() {
           setCast(credits.cast)
           const trailer = await fetchTrailer(`${urlBase}`)
           setTrailerUrl(trailer)
+          // Busca onde assistir
+          const providerUrl = `https://api.themoviedb.org/3/tv/${id}/watch/providers?${apiKey}`
+          const response = await fetch(providerUrl)
+          const providerData = await response.json()
+
+          const providersInBR = providerData.results?.BR?.flatrate || []
+          setWatchProviders(providersInBR)
+
         } catch (error) {
           console.error("Erro ao buscar dados da série:", error)
         }
@@ -128,6 +137,26 @@ export default function Serie() {
                         </span>
                       </p>
                     </li>
+                    <li className="list-group-item *:inline mt-2">
+                    <h3 className="font-bold inline">
+                      <FaCirclePlay className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" />
+                      Onde assistir:
+                    </h3>
+                    {watchProviders.length > 0 ? (
+                      watchProviders.map((provider) => (
+                        <img
+                          key={provider.provider_id}
+                          src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
+                          alt={provider.provider_name}
+                          title={provider.provider_name}
+                          className="inline w-10 h-10 mx-1"
+                        />
+                      ))
+                    ) : (
+                      <p className="dark:text-tertiaryBlack text-secundaryBlack ml-1 inline">Não disponível</p>
+                    )}
+                  </li>
+
                   </ul>
                 </motion.div>
               </motion.div>

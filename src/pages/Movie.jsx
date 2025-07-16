@@ -5,7 +5,7 @@ import { useComeback } from "../hooks/useComeback"
 import { fetchDetails, fetchCredits, fetchTrailer } from "../services/mediaService"
 
 //icones e imagem
-import {BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaWallet, FaUserGroup, MdTimer, SlGraph, IoMdArrowRoundBack, IoStar, PiPopcornFill, FaEarthAmericas} from '../utils/icones'
+import {BsFillFileEarmarkTextFill, FaStar, FaCalendarAlt, FaWallet, FaUserGroup, MdTimer, SlGraph, IoMdArrowRoundBack, IoStar, PiPopcornFill, FaEarthAmericas, FaCirclePlay} from '../utils/icones'
 import notFound from '../assets/notFound.webp'
 
 //funções de formatação
@@ -25,6 +25,7 @@ export default function Movie() {
   const [trailerUrl, setTrailerUrl] = useState(null)
   const [cast, setCast] = useState([])
   const [director, setDirector] = useState("")
+  const [watchProviders, setWatchProviders] = useState([])
   const handleComeback = useComeback()
 
   // Efeito colateral para buscar os dados do filme, créditos e trailer
@@ -44,6 +45,16 @@ export default function Movie() {
 
           const trailer = await fetchTrailer(`${urlBase}`)
           setTrailerUrl(trailer)
+          // URL para buscar onde assistir
+          const providerUrl = `https://api.themoviedb.org/3/movie/${id}/watch/providers?${apiKey}`
+
+          const response = await fetch(providerUrl)
+          const providerData = await response.json()
+
+          // Verifica se tem resultado pro Brasil
+          const providersInBR = providerData.results?.BR?.flatrate || []
+          setWatchProviders(providersInBR)
+
         } catch (error) {
           console.error("Erro ao buscar dados do filme:", error)
         }
@@ -131,6 +142,26 @@ export default function Movie() {
                   <li className="list-group-item *:inline">
                     <p className="font-bold mt-3"><IoStar className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2"/> Diretor: <span className="dark:text-tertiaryBlack text-neutral-700 ">{director || "Não informado"}</span></p>
                   </li>
+                  <li className="list-group-item *:inline mt-2">
+                  <h3 className="font-bold inline">
+                    <FaCirclePlay className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" />
+                    Onde assistir:
+                  </h3>
+                  {watchProviders.length > 0 ? (
+                    watchProviders.map((provider) => (
+                      <img
+                        key={provider.provider_id}
+                        src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
+                        alt={provider.provider_name}
+                        title={provider.provider_name}
+                        className="inline w-10 h-10 mx-1"
+                      />
+                    ))
+                  ) : (
+                    <p className="dark:text-tertiaryBlack text-secundaryBlack ml-1 inline">Não disponível</p>
+                  )}
+                </li>
+
                 </ul>
               </motion.div>
             </motion.div>
