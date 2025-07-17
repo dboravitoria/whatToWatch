@@ -14,9 +14,9 @@ import { formatDate, formatHour, getYear, getCountryInfo } from "../utils/format
 import { fetchDetails, fetchCredits, fetchTrailer } from "../services/mediaService"
 
 //variáveis de ambiente
-const searchUrl = import.meta.env.VITE_URL_API_SERIES
-const apiKey = import.meta.env.VITE_KEY_API
-const imgSearch = import.meta.env.VITE_IMG
+const searchUrl = "https://api.themoviedb.org/3/tv/"
+const apiKey = "api_key=24eb66121fdd14b703bdc7732d396c83"
+const imgSearch = "https://image.tmdb.org/t/p/w500"
 
 export default function Serie() {
   const { id } = useParams()
@@ -43,10 +43,8 @@ export default function Serie() {
           const providerUrl = `https://api.themoviedb.org/3/tv/${id}/watch/providers?${apiKey}`
           const response = await fetch(providerUrl)
           const providerData = await response.json()
-
           const providersInBR = providerData.results?.BR?.flatrate || []
           setWatchProviders(providersInBR)
-
         } catch (error) {
           console.error("Erro ao buscar dados da série:", error)
         }
@@ -65,7 +63,7 @@ export default function Serie() {
           {serie && (
             <>
             {/* Lado esquerdo do grid */}
-              <motion.div className="col-4" initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+              <motion.div className="col-9 col-md-4 mt-5 mt-md-0" initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
                 {/* Transição que faz aumentar o botão no hover */}
                 <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
                   <button className="card px-4 py-2 mt-5 dark:bg-primaryBlack bg-tertiaryBlack hover:bg-primaryRed dark:hover:bg-primaryRed" onClick={handleComeback}>
@@ -138,24 +136,13 @@ export default function Serie() {
                       </p>
                     </li>
                     <li className="list-group-item *:inline mt-2">
-                    <h3 className="font-bold inline">
-                      <FaCirclePlay className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" />
-                      Onde assistir:
-                    </h3>
+                    <h3 className="font-bold inline"><FaCirclePlay className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" /> Onde assistir: </h3>
                     {watchProviders.length > 0 ? (
                       watchProviders.map((provider) => (
-                        <img
-                          key={provider.provider_id}
-                          src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
-                          alt={provider.provider_name}
-                          title={provider.provider_name}
-                          className="inline w-10 h-10 mx-1"
-                        />
+                        <img key={provider.provider_id} src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`} alt={provider.provider_name} title={provider.provider_name} className="inline w-10 h-10 mx-1"/>
                       ))
-                    ) : (
-                      <p className="dark:text-tertiaryBlack text-secundaryBlack ml-1 inline">Não disponível</p>
-                    )}
-                  </li>
+                    ) : (<p className="dark:text-tertiaryBlack text-secundaryBlack ml-1 inline">Não disponível</p>)}
+                    </li>
 
                   </ul>
                 </motion.div>
@@ -163,7 +150,7 @@ export default function Serie() {
 
 
               {/* Lado direito do grid */}
-              <motion.div className="col-5 mt-32" initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+              <motion.div className="col-md-5 col-9 md:mt-32 mt-10" initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 
                 {/* Card com nome, ano, nota e slogam da série */}
                 <motion.div className="card p-3 dark:bg-primaryBlack bg-tertiaryBlack" whileHover={{ scale: 1.01 }}>

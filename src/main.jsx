@@ -7,8 +7,8 @@ import Home from './pages/Home.jsx'
 import Movie from './pages/Movie.jsx'
 import Serie from './pages/Serie.jsx'
 import Search from './pages/Search.jsx'
-import Error500 from './pages/Error500.jsx';
 import NotFound from './components/NotFound.jsx'
+import PageDevelopment from './components/PageDevelopment.jsx'
 
 
 //importando os estilos
@@ -26,7 +26,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/' element={<Home />}/>
             {/* Rota para página não encontrada */}
             <Route path="*" element={<NotFound />} />
-            <Route path="/500" element={<Error500 />} />
+            <Route path='/pageindevelopment' element={<PageDevelopment/>}/>
             <Route path='/movie/:id' element={<Movie />}/>
             <Route path='/tv/:id' element={<Serie />}/>
             <Route path='/search' element={<Search />}/>

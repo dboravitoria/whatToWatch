@@ -4,6 +4,7 @@
 
 body{
     background-color: #ddd;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI Emoji', sans-serif;
 }
 .dark {
     background-color: #242424;

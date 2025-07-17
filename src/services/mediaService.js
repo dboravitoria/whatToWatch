@@ -1,5 +1,5 @@
 //variável da chave da API
-const apiKey = import.meta.env.VITE_KEY_API
+const apiKey = "api_key=24eb66121fdd14b703bdc7732d396c83"
 
 //função que busca detalhes de uma série ou filme
 export const fetchDetails = async (url) => {

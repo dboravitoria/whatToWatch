@@ -1,22 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { RiMoonClearFill, FaSun } from '../utils/icones'
 
 export default function ToggleTheme() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light'
-  })
+  const [theme, setTheme] = useState('light')
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
     setTheme(newTheme)
+
+    document.documentElement.classList.remove('dark', 'light')
+    document.documentElement.classList.add(newTheme)
+    document.documentElement.setAttribute('data-bs-theme', newTheme)
     localStorage.setItem('theme', newTheme)
   }
 
   useEffect(() => {
-    document.documentElement.classList.remove('light', 'dark')
-    document.documentElement.classList.add(theme)
-    document.documentElement.setAttribute('data-bs-theme', theme)
-  }, [theme])
+    const savedTheme = localStorage.getItem('theme') || 'light'
+    setTheme(savedTheme)
+    document.documentElement.classList.add(savedTheme)
+    document.documentElement.setAttribute('data-bs-theme', savedTheme)
+  }, [])
 
   return (
     <button onClick={toggleTheme} className="flex items-center gap-2">

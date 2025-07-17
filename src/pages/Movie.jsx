@@ -15,9 +15,9 @@ import { formatCurrency, formatDate, formatHour, getYear, getCountryInfo } from 
 import { motion  } from "framer-motion";
 
 //variables de ambiente
-const searchUrl = import.meta.env.VITE_URL_API_MOVIE
-const apiKey = import.meta.env.VITE_KEY_API
-const imgSearch = import.meta.env.VITE_IMG
+const searchUrl = "https://api.themoviedb.org/3/movie/"
+const apiKey = "api_key=24eb66121fdd14b703bdc7732d396c83"
+const imgSearch = "https://image.tmdb.org/t/p/w500"
 
 export default function Movie() {
   const { id } = useParams()
@@ -31,39 +31,31 @@ export default function Movie() {
   // Efeito colateral para buscar os dados do filme, créditos e trailer
   useEffect(() => {
       const urlBase = `${searchUrl}${id}`
-
       const fetchMovieData = async () => {
         try {
           const data = await fetchDetails(`${urlBase}?${apiKey}&language=pt-BR`)
           setMovie(data)
-
           const credits = await fetchCredits(`${urlBase}`, 10)
           setCast(credits.cast)
-
           const directorName = credits.director || ""
           setDirector(directorName)
-
           const trailer = await fetchTrailer(`${urlBase}`)
           setTrailerUrl(trailer)
+
           // URL para buscar onde assistir
           const providerUrl = `https://api.themoviedb.org/3/movie/${id}/watch/providers?${apiKey}`
-
           const response = await fetch(providerUrl)
           const providerData = await response.json()
 
           // Verifica se tem resultado pro Brasil
           const providersInBR = providerData.results?.BR?.flatrate || []
           setWatchProviders(providersInBR)
-
         } catch (error) {
           console.error("Erro ao buscar dados do filme:", error)
         }
       }
-
       fetchMovieData()
     }, [id])
-
-
 
   return (
     <>
@@ -73,16 +65,15 @@ export default function Movie() {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
 
         {/* Cria um layout grid pra separar as informações */}
-        <div className="row justify-center gap-4 mb-10 mt-24 max-w-full mx-auto">
+        <div className="row justify-center gap-4 mb-10 mt-24">
           {movie && (
             <>
             {/* Lado esquerdo do grid */}
-            <motion.div className="col-4" initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+            <motion.div className="col-9 col-md-4 mt-5 mt-md-0" initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 
               {/* Transição que faz aumentar o botão no hover */}
               <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
-                <button className="card px-4 py-2 mt-5 dark:bg-primaryBlack bg-tertiaryBlack dark:hover:bg-primaryRed hover:bg-primaryRed"
-                onClick={handleComeback}>
+                <button className="card px-4 py-2 mt-5 dark:bg-primaryBlack bg-tertiaryBlack dark:hover:bg-primaryRed hover:bg-primaryRed" onClick={handleComeback}>
                   <IoMdArrowRoundBack />
                 </button>
               </motion.div>
@@ -132,9 +123,7 @@ export default function Movie() {
                     <h3 className="font-bold inline">
                       <FaEarthAmericas className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" /> País de Origem: </h3>
                     <p className="dark:text-tertiaryBlack text-secundaryBlack">
-                      {movie.origin_country.length > 0
-                        ? movie.origin_country.map(getCountryInfo).join(", ")
-                        : "Não disponível"}
+                      {movie.origin_country.length > 0 ? movie.origin_country.map(getCountryInfo).join(", ") : "Não disponível"}
                     </p>
                   </li>
 
@@ -143,32 +132,20 @@ export default function Movie() {
                     <p className="font-bold mt-3"><IoStar className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2"/> Diretor: <span className="dark:text-tertiaryBlack text-neutral-700 ">{director || "Não informado"}</span></p>
                   </li>
                   <li className="list-group-item *:inline mt-2">
-                  <h3 className="font-bold inline">
-                    <FaCirclePlay className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" />
-                    Onde assistir:
-                  </h3>
+                  <h3 className="font-bold inline"><FaCirclePlay className="inline mb-1 dark:text-primaryYellow text-primaryRed mr-2" /> Onde assistir: </h3>
                   {watchProviders.length > 0 ? (
                     watchProviders.map((provider) => (
-                      <img
-                        key={provider.provider_id}
-                        src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`}
-                        alt={provider.provider_name}
-                        title={provider.provider_name}
-                        className="inline w-10 h-10 mx-1"
-                      />
+                      <img key={provider.provider_id} src={`https://image.tmdb.org/t/p/w45${provider.logo_path}`} alt={provider.provider_name} title={provider.provider_name}className="inline w-10 h-10 mx-1"/>
                     ))
-                  ) : (
-                    <p className="dark:text-tertiaryBlack text-secundaryBlack ml-1 inline">Não disponível</p>
-                  )}
-                </li>
-
+                  ) : (<p className="dark:text-tertiaryBlack text-secundaryBlack ml-1 inline">Não disponível</p> )}
+                  </li>
                 </ul>
               </motion.div>
             </motion.div>
 
 
             {/* Lado direito do grid */}
-            <motion.div className="col-5 mt-32" initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
+            <motion.div className="col-md-5 col-9 md:mt-32 mt-10" initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
 
               {/* Transição que faz aumentar o tamanho do card */}
               <motion.div className="card p-3 dark:bg-primaryBlack bg-tertiaryBlack" whileHover={{ scale: 1.01 }}>

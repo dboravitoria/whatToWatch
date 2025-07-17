@@ -11,12 +11,11 @@ import Loading from "../components/Loading"
 import Pagination from "../components/Pagination"
 import { IoMdArrowRoundBack } from '../utils/icones'
 
-
 //variáveis de ambiente
-const moviesSearchUrl = import.meta.env.VITE_SEARCH_MOVIE
-const seriesSearchUrl = import.meta.env.VITE_SEARCH_SERIES
-const searchPersonUrl = import.meta.env.VITE_SEARCH_PERSON
-const apiKey = import.meta.env.VITE_KEY_API
+const moviesSearchUrl = "https://api.themoviedb.org/3/search/movie"
+const seriesSearchUrl = "https://api.themoviedb.org/3/search/tv"
+const searchPersonUrl = "https://api.themoviedb.org/3/search/person"
+const apiKey = "api_key=24eb66121fdd14b703bdc7732d396c83"
 
 export default function Search() {
   const [searchParams] = useSearchParams()
@@ -26,10 +25,10 @@ export default function Search() {
   const query = searchParams.get("q")
   const handleComeback = useComeback()
   const { isLoading, withLoading } = useLoading()
+  const ITEMS_PER_PAGE = 21; 
 
-  const ITEMS_PER_PAGE = 18; // quantidade por página
   const getSearchResults = async () => {
-          const ITEMS_PER_API = 5 // quantas páginas buscar por tipo
+          const ITEMS_PER_API = 5 
           let allMovies = []
           let allSeries = []
 
@@ -50,7 +49,6 @@ export default function Search() {
           // Busca pessoa (ator/diretor)
           const personRes = await fetch(`${searchPersonUrl}?${apiKey}&query=${query}&language=pt-BR`)
           const personData = await personRes.json()
-
           let actorCredits = []
 
           if (personData.results?.length > 0) {
@@ -59,23 +57,14 @@ export default function Search() {
             )
             if (actorsAndDirectors.length > 0) {
               const person = actorsAndDirectors[0]
-              const creditsRes = await fetch(
-                `https://api.themoviedb.org/3/person/${person.id}/combined_credits?${apiKey}&language=pt-BR`
-              )
+              const creditsRes = await fetch(`https://api.themoviedb.org/3/person/${person.id}/combined_credits?${apiKey}&language=pt-BR`)
               const creditsData = await creditsRes.json()
-              actorCredits = creditsData.cast?.map(item => ({
-                ...item,
-                media_type: item.media_type || (item.first_air_date ? "tv" : "movie")
-              })) || []
+              actorCredits = creditsData.cast?.map(item => ({...item, media_type: item.media_type || (item.first_air_date ? "tv" : "movie") })) || []
             }
           }
 
           // Junta tudo
-          const combined = [
-            ...allMovies.map(movie => ({ ...movie, media_type: "movie" })),
-            ...allSeries.map(serie => ({ ...serie, media_type: "tv" })),
-            ...actorCredits
-          ]
+          const combined = [ ...allMovies.map(movie => ({ ...movie, media_type: "movie" })), ...allSeries.map(serie => ({ ...serie, media_type: "tv" })), ...actorCredits]
 
           // Remove duplicatas por id + tipo
           const uniqueMap = new Map()
@@ -96,63 +85,59 @@ export default function Search() {
 
           setCombinedResults(paginated)
           setTotalPages(Math.ceil(uniqueResults.length / ITEMS_PER_PAGE))
-        }
+  }
 
+  //volta sempre pra primeira página quando a query muda
+  useEffect(() => {
+      setPage(1)
+  }, [query])
 
-
-      //volta sempre pra primeira página quando a query muda
-      useEffect(() => {
-          setPage(1)
-        }, [query])
-
-      // Efeito colateral que busca os resultados quando a query ou a página muda
-      useEffect(() => {
-          if (query) {
-            withLoading(getSearchResults)
-          }
-          window.scrollTo({ top: 0, behavior: "smooth" })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [query, page])
-
-      // Função que lida a mudança de página
-      const handlePageChange = (newPage) => {
-        if (newPage !== page && newPage >= 1 && newPage <= totalPages) {
-          setPage(newPage)
-        }
+  // Efeito colateral que busca os resultados quando a query ou a página muda
+  useEffect(() => {
+      if (query) {
+        withLoading(getSearchResults)
       }
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [query, page])
+
+  // Função que lida a mudança de página
+  const handlePageChange = (newPage) => {
+    if (newPage !== page && newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage)
+    }
+  }
 
   return (
     <>
-       <div className="mt-40">
+       <div className="md:mt-40 mt-52 ">
       
-        {/* Título que exibe a query de busca */}
-          
-                {/* Transição que faz aumentar o botão no hover */}
-                <motion.div whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 300 }}>
-                  <button className="card ml-28 px-4 py-2 mt-5 dark:bg-primaryBlack bg-tertiaryBlack hover:bg-primaryRed dark:hover:bg-primaryRed" onClick={handleComeback}>
-                    <IoMdArrowRoundBack />
-                  </button>
-                </motion.div>
-        <h1 className="font-bold text-4xl p-4 dark:text-primaryYellow text-primaryRed text-center m-5">
-          
-          Resultado: <span className="dark:text-white text-secundaryBlack uppercase">{query}</span>
-        </h1>
-        {/* Exibe o loading enquanto busca os resultados */}
-        {isLoading ? (<Loading message="Buscando resultados..." />) : (
-          <>
-            <div className="row justify-content-center g-4 gap-4">
-              {combinedResults.length > 0 ? (combinedResults.map((item) => (
-                  <Card item={item} key={`${item.media_type}-${item.id}`} />))) : (
-                <p className="text-primaryRed uppercase text-center font-bold">
-                  Nenhum resultado encontrado ❌
-                </p>
-              )}
-            </div>
-            {/* Componente de paginação */}
-            <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
-          </>
-        )}
-    </div>
+          {/* Título que exibe a query de busca */}
+            
+          {/* Transição que faz aumentar o botão no hover */}
+          <motion.div whileHover={{ scale: 1.01 }} transition={{ type: 'spring', stiffness: 100 }}>
+            <button className="card md:ml-28 ml-16 px-4 py-2 mt-5 -mb-10 dark:bg-primaryBlack bg-tertiaryBlack hover:bg-primaryRed dark:hover:bg-primaryRed" onClick={handleComeback}>
+              <IoMdArrowRoundBack />
+            </button>
+          </motion.div>
+
+          <h1 className="font-bold text-4xl p-4 dark:text-primaryYellow text-primaryRed text-center m-5"> Resultado: <span className="dark:text-white text-secundaryBlack uppercase">{query}</span></h1>
+          {/* Exibe o loading enquanto busca os resultados */}
+          {isLoading ? (<Loading message="Buscando resultados..." />) : (
+            <>
+              <div className="row justify-content-center g-4 gap-4">
+                {combinedResults.length > 0 ? (combinedResults.map((item) => (
+                    <Card item={item} key={`${item.media_type}-${item.id}`} />))) : (
+                  <p className="text-primaryRed uppercase text-center font-bold">
+                    Nenhum resultado encontrado ❌
+                  </p>
+                )}
+              </div>
+              {/* Componente de paginação */}
+              <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+            </>
+          )}
+       </div>
         
     </>
   )

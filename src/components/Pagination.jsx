@@ -13,11 +13,12 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       {page > 1 && (
         <>
           {/* Botão de ir para a primeira página */}
-          <button onClick={() => onPageChange(1)} className="px-4 py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
+          <button onClick={() => onPageChange(1)} className="px-2 md:px-4 py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
             <FaFastBackward />
           </button>
+          
           {/* Botão de voltar uma página */}
-          <button onClick={() => onPageChange(page - 1)} className="px-4 py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
+          <button onClick={() => onPageChange(page - 1)} className="px-2 md:px-4  py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
             <FaStepBackward />
           </button>
         </>
@@ -27,21 +28,23 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       {Array.from({ length: endPage - startPage + 1 }, (_, index) => {
         const pageNumber = startPage + index
         return (
-          <button key={pageNumber} onClick={() => onPageChange(pageNumber)} className={`px-4 py-2 rounded card ${pageNumber === page ? "bg-primaryRed dark:bg-primaryYellow text-black font-bold" : "bg-darkBack text-white dark:hover:bg-secondaryYellow hover:bg-secondaryRed"}`}>{pageNumber}</button>)
+          <button key={pageNumber} onClick={() => onPageChange(pageNumber)} className={`px-2 md:px-4 py-1 md:py-2 rounded card ${pageNumber === page ? "bg-primaryRed dark:bg-primaryYellow text-black font-bold" : "bg-darkBack text-white dark:hover:bg-secondaryYellow hover:bg-secondaryRed"}`}>{pageNumber}</button>)
       })}
 
       {page < totalPages && (
         <>
           {/* Botão de avançar uma página */}
-          <button onClick={() => onPageChange(page + 1)} className="px-4 py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
+          <button onClick={() => onPageChange(page + 1)} className="px-2 md:px-4  py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
             <FaStepForward />
           </button>
+
           {/* Botão de ir para a última página */}
-          <button onClick={() => onPageChange(totalPages)} className="px-4 py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
+          <button onClick={() => onPageChange(totalPages)} className="px-2 md:px-4  py-2 rounded flex justify-center items-center text-white card dark:bg-primaryBlack dark:hover:bg-secondaryRed bg-secundaryBlack hover:bg-primaryRed">
             <FaFastForward />
           </button>
         </>
       )}
+
     </div>
   )
 }

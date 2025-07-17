@@ -6,10 +6,11 @@ import { useLoading } from "../hooks/useLoading"
 import Card from "../components/Card"
 import Pagination from "../components/Pagination"
 import Loading from "../components/Loading"
+
 //variáveis de ambiente
-const moviesURL = import.meta.env.VITE_URL_API_MOVIE
-const seriesURL = import.meta.env.VITE_URL_API_SERIES
-const apiKey = import.meta.env.VITE_KEY_API
+const moviesURL = "https://api.themoviedb.org/3/movie/"
+const seriesURL = "https://api.themoviedb.org/3/tv/"
+const apiKey = "api_key=24eb66121fdd14b703bdc7732d396c83"
 
 export default function Home() {
   const [topMovies, setTopMovies] = useState([])
@@ -45,14 +46,12 @@ export default function Home() {
         const moviesData = await moviesRes.json()
         const seriesData = await seriesRes.json()
 
-        setTopMovies(Array.isArray(moviesData.results) ? moviesData.results.slice(0, 9) : [])
-        setTopSeries(Array.isArray(seriesData.results) ? seriesData.results.slice(0, 9) : [])
+        setTopMovies(Array.isArray(moviesData.results) ? moviesData.results.slice(0, 11) : [])
+        setTopSeries(Array.isArray(seriesData.results) ? seriesData.results.slice(0, 10) : [])
         setTotalPages(Math.min(moviesData.total_pages, 500))
 
       } catch (error) {
         console.error("Erro ao buscar dados:", error)
-        // Se quiser, pode mandar pra 500 aqui também, mas já fez nos status
-        // navigate('/500')
       }
     }
 
@@ -83,7 +82,7 @@ export default function Home() {
 
   return (
     <>
-    <div className="bg-primaryWhite dark:bg-darkBack mt-40">
+    <div className="bg-primaryWhite dark:bg-darkBack mt-48 md:mt-40">
       
         {/* Título que varia se for a primeira página */}
         <h1 className="font-bold text-4xl p-4 dark:text-primaryYellow text-primaryRed text-center m-5">
@@ -95,14 +94,12 @@ export default function Home() {
           {isLoading ? (<Loading />) :
           (!combinedResults || combinedResults.length === 0 ? (
             <p className="text-primaryRed text-center font-bold">Nenhum resultado encontrado</p>
-          ) : (
-            combinedResults.map(item => (<Card item={item} key={item.id} />))
-          )
+          ) : (combinedResults.map(item => (<Card item={item} key={item.id} />)))
         )}
-
         </div>
         {/* Exibe a paginação */}
         <Pagination totalPages={totalPages} onPageChange={handlePageChange} page={page} />
+        
     </div>
     </>
   )
