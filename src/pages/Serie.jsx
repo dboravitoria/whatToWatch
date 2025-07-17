@@ -55,8 +55,6 @@ export default function Serie() {
 
   return (
     <>
-    {/* Esse console é só para ambiente de desenvolvimento, pra eu ver oq a série me retorna */}
-    {console.log(serie)}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
         {/* Grid de detalhes da série */}
         <div className="row justify-center gap-4 mb-10 mt-24">

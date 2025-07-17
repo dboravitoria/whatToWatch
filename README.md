@@ -47,7 +47,8 @@ O **WhatToWatch** é um projeto desenvolvido com React.js que consome a API da [
 ## 🌐 Deploy
 
 O deploy foi feito via Vercel.
-[link]
+[Acesse o projeto What to Watch](https://what-to-watch-pi.vercel.app)
+
 
 ---
 

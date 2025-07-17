@@ -59,8 +59,6 @@ export default function Movie() {
 
   return (
     <>
-    {/* Esse console é só para ambiente de desenvolvimento, pra eu ver oq o filme me retorna */}
-    {console.log(movie)}
       {/* Transição que faz os elementos aparecerem na tela de forma suave */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
 
